@@ -1,0 +1,10 @@
+//para subir archivos
+git push --set-upstream origin main
+
+//crear la migración de tablas
+php artisan make:migration
+//pide el nombre
+create_provincias_table
+//crea la tabla
+php artisan migrate
+

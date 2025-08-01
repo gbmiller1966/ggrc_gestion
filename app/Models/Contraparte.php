@@ -4,17 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Provincia extends Model
+class Contraparte extends Model
 {
     //
 
-    protected $fillable = ['nombre', 'region_id'];
+    protected $fillable = ['nombre', 'apellido', 'email', 'celular', 'dependencia'];
 
     public function expedientes(){
         return $this->hasMany(Expediente::class);
     }
-
-    public function region(){
-        return $this->belongsTo(Region::class);
-    }
+    
 }

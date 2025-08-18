@@ -7,16 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Direccion extends Model
 {
     //
+    protected $table = 'direcciones';
+    protected $fillable = ['direccion'];
 
-    protected $fillable = ['nombre'];
-
-    public function expedientes(){
-        return $this->hasMany(Expediente::class);
-    }
-
-    public function tecnicos(){
-        return $this->hasMany(Tecnico::class);
-    }
 
     public function areas(){
         return $this->hasMany(Area::class);

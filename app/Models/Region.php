@@ -8,7 +8,7 @@ class Region extends Model
 {
     //
     protected $table = 'regiones';
-    protected $fillable = ['nombre'];
+    protected $fillable = ['region'];
 
     public function provincias(){
         return $this->hasMany(Provincia::class);

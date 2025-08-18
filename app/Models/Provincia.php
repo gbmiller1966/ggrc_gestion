@@ -8,7 +8,7 @@ class Provincia extends Model
 {
     //
 
-    protected $fillable = ['nombre', 'region_id'];
+    protected $fillable = ['provincia', 'region_id'];
 
     public function expedientes(){
         return $this->hasMany(Expediente::class);

@@ -8,7 +8,7 @@ class Tipo extends Model
 {
     //
 
-    protected $fillable = ['nombre'];
+    protected $fillable = ['tipo'];
 
     public function expedientes(){
         return $this->hasMany(Expediente::class);

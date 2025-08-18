@@ -8,10 +8,10 @@ class Informe extends Model
 {
     //
 
-    protected $fillable = ['nombre'];
+    protected $fillable = ['informe'];
 
     public function expedientes(){
-        return $this->hasMany(Expediente::class);
+        return $this->belongsToMany(Expediente::class, 'expediente_informes')->withTimestamps();
     }
     
 }

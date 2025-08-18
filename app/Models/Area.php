@@ -8,17 +8,17 @@ class Area extends Model
 {
     //
 
-    protected $fillable = ['nombre'];
+    protected $fillable = ['area', 'direccion_id'];
 
     public function expedientes(){
         return $this->hasMany(Expediente::class);
     }
 
-    public function tecnicos(){
-        return $this->hasMany(Tecnico::class);
+    public function usuarios(){
+        return $this->hasMany(Usuario::class);
     }
 
-    public function direcciones(){
+    public function direccion(){
         return $this->belongsTo(Direccion::class);
     }
 }

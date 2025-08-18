@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Asignacion extends Model
 {
     //
-
-    protected $fillable = ['nombre'];
+    protected $table = 'asignaciones';
+    protected $fillable = ['asignacion'];
 
     public function expedientes(){
         return $this->hasMany(Expediente::class);

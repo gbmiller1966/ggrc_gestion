@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Proveedor extends Model
 {
     //
-
-    protected $fillable = ['razon', 'nombre', 'apellido', 'email', 'celular'];
+    protected $table = 'proveedores';
+    protected $fillable = ['razon', 'nombre', 'apellido', 'email', 'celular', 'provincia_id'];
 
     public function expedientes(){
         return $this->hasMany(Expediente::class);

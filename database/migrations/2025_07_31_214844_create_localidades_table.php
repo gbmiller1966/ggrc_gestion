@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('localidades', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('localidad');
             $table->decimal('longitud',10,10)->nullable();
             $table->decimal('latitud',10,10)->nullable();
             $table->foreignIdFor(\App\Models\Provincia::class);

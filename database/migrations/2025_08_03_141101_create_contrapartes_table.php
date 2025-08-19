@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->string('email');
-            $table->string('celular');
+            $table->bigInteger('celular');
             $table->string('dependencia');
             $table->foreignIdFor(\App\Models\Provincia::class);
             $table->timestamps();

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->string('email')->unique();
-            $table->integer('celular');
+            $table->bigInteger('celular');
             $table->foreignIdFor(\App\Models\Direccion::class);
             $table->foreignIdFor(\App\Models\Area::class);
             $table->foreignIdFor(\App\Models\Rol::class);

@@ -12,6 +12,7 @@
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form action="/contrapartes" method="POST" class="space-y-6">
         @csrf
+        
         <div>
             <label for="nombre" class="block text-sm/6 font-medium text-gray-900">Nombre:</label>
             <div class="mt-2">

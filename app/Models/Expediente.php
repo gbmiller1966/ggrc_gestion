@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Expediente extends Model {
 
+
+    // permite no controlar los campos a cargar masivamente: protected $guarded = [];
+
     protected $fillable = [
         'titulo',
         'objeto',
@@ -22,6 +25,7 @@ class Expediente extends Model {
         'gde_firma_direccion',
         'fecha_derivacion_gestion',
         'tiempo_direccion_gestion',
+        'tiempo_gestion_contrato',
         'fecha_inicio_contrato',
         'tiempo_total_gestion',
         'plazo',

@@ -15,6 +15,7 @@ use App\Models\Tema;
 use App\Models\Tipo;
 use App\Models\Estado;
 use App\Models\Informe;
+use App\Models\Hito;
 
 Route::get('/', function () {
 /*     $expedientes = Expediente::all();
@@ -27,9 +28,12 @@ Route::get('/', function () {
     );
 });
 
+
+//Expedientes
+
 Route::get('/expedientes', function (){
     return view('expedientes.index', [
-        'expedientes' => Expediente::all()
+        'expedientes' => Expediente::latest()->simplePaginate(15),
     ]);
 });
 
@@ -102,13 +106,18 @@ Route::post('/expedientes', function(){
     }else{
         $tiempo_direccion_gestion = 0;
     }
-
-    //Total tiempo de gestión
+    
     if(request('fecha_inicio_contrato')){
+        //tiempo desde el pase a gestión hasta el inicio del contrato
         $fecha_inicio_contrato = new DateTime(request('fecha_inicio_contrato'));
+        $diferencia_gestion_firma_contrato = $fecha_derivacion_gestion->diff($fecha_inicio_contrato);
+        $tiempo_gestion_contrato = $diferencia_gestion_firma_contrato->days;
+
+        //Total tiempo de gestión desde ingreso hasta la firma del contrato
         $diferencia_ingreso_inicio = $fecha_ingreso_cfi->diff($fecha_inicio_contrato);
         $tiempo_total_gestion = $diferencia_ingreso_inicio->days;
     }else{
+        $tiempo_gestion_contrato = 0;
         $tiempo_total_gestion = 0;
     }
 
@@ -139,6 +148,7 @@ Route::post('/expedientes', function(){
         'fecha_derivacion_gestion' => $fecha_derivacion_gestion,
         'tiempo_direccion_gestion' => $tiempo_direccion_gestion,
         'fecha_inicio_contrato' => $fecha_inicio_contrato,
+        'tiempo_gestion_contrato' => $tiempo_gestion_contrato,
         'tiempo_total_gestion' => $tiempo_total_gestion,
         'plazo' => $plazo,
         'fecha_fin_contrato' => $fecha_fin_contrato,
@@ -194,13 +204,48 @@ Route::get('/regiones/create', function (){
     return view('regiones.create');
 });
 
+Route::post('/regiones/{id}', function ($id){
+    $region = Region::findOrFail($id);
+
+    request()->validate([
+        'region' => 'required|max:50',
+    ]);
+
+    $region->update([
+        'region' => request('region'),
+    ]);
+
+    return redirect('/regiones');
+});
+
 Route::post('/regiones', function(){
-    //d(request()->all());
+    request()->validate([
+        'region' => 'required|max:50',
+    ]);
+
     Region::create([
         'region' => request('region'),
     ]);
     return redirect('/regiones');
 });
+
+Route::get('/regiones/{id}/edit', function ($id){
+    $region = Region::find($id);
+    if (!$region) {
+        abort(404, 'Región no encontrada');
+    }
+
+    return view('regiones.edit', ['region' => $region]);
+});
+
+Route::delete('/regiones/{id}', function ($id){
+    $region = Region::findOrFail($id);
+    $region->delete();
+    return redirect('/regiones');
+});
+
+
+
 
 
 
@@ -336,7 +381,7 @@ Route::post('/usuarios', function(){
 
 Route::get('/contrapartes', function (){
     return view('contrapartes.index', [
-        'contrapartes' => \App\Models\Contraparte::all()
+        'contrapartes' => Contraparte::all()
     ]);
 });
 
@@ -347,7 +392,7 @@ Route::get('/contrapartes/create', function (){
 
 Route::post('/contrapartes', function(){
     //d(request()->all());
-    \App\Models\Contraparte::create([
+    Contraparte::create([
         'nombre' => request('nombre'),
         'apellido' => request('apellido'),
         'email' => request('email'),
@@ -365,7 +410,7 @@ Route::post('/contrapartes', function(){
 
 Route::get('/proveedores', function (){
     return view('proveedores.index', [
-        'proveedores' => \App\Models\Proveedor::all()
+        'proveedores' => Proveedor::all()
     ]);
 });
 
@@ -394,7 +439,7 @@ Route::post('/proveedores', function(){
 
 Route::get('/asignaciones', function (){
     return view('asignaciones.index', [
-        'asignaciones' => \App\Models\Asignacion::all()
+        'asignaciones' => Asignacion::all()
     ]);
 });
 
@@ -404,7 +449,7 @@ Route::get('/asignaciones/create', function (){
 
 Route::post('/asignaciones', function(){
     //d(request()->all());
-    \App\Models\Asignacion::create([
+    Asignacion::create([
         'asignacion' => request('asignacion'),
     ]);
     return redirect('/asignaciones');
@@ -415,7 +460,7 @@ Route::post('/asignaciones', function(){
 
 Route::get('/temas', function (){
     return view('temas.index', [
-        'temas' => \App\Models\Tema::all()
+        'temas' => Tema::all()
     ]);
 });
 
@@ -425,7 +470,7 @@ Route::get('/temas/create', function (){
 
 Route::post('/temas', function(){
     //d(request()->all());
-    \App\Models\Tema::create([
+    Tema::create([
         'tema' => request('tema'),
     ]);
     return redirect('/temas');
@@ -436,7 +481,7 @@ Route::post('/temas', function(){
 
 Route::get('/tipos', function (){
     return view('tipos.index', [
-        'tipos' => \App\Models\Tipo::all()
+        'tipos' => Tipo::all()
     ]);
 });
 
@@ -446,7 +491,7 @@ Route::get('/tipos/create', function (){
 
 Route::post('/tipos', function(){
     //d(request()->all());
-    \App\Models\Tipo::create([
+    Tipo::create([
         'tipo' => request('tipo'),
     ]);
     return redirect('/tipos');
@@ -456,7 +501,7 @@ Route::post('/tipos', function(){
 //Estados del expediente
 Route::get('/estados', function (){
     return view('estados.index', [
-        'estados' => \App\Models\Estado::all()
+        'estados' => Estado::all()
     ]);
 });
 
@@ -466,7 +511,7 @@ Route::get('/estados/create', function (){
 
 Route::post('/estados', function(){
     //d(request()->all());
-    \App\Models\Estado::create([
+    Estado::create([
         'estado' => request('estado'),
     ]);
     return redirect('/estados');
@@ -476,7 +521,7 @@ Route::post('/estados', function(){
 //Informes
 Route::get('/informes', function (){
     return view('informes.index', [
-        'informes' => \App\Models\Informe::all()
+        'informes' => Informe::all()
     ]);
 });
 
@@ -486,8 +531,35 @@ Route::get('/informes/create', function (){
 
 Route::post('/informes', function(){
     //d(request()->all());
-    \App\Models\Informe::create([
+    Informe::create([
         'informe' => request('informe'),
     ]);
     return redirect('/informes');
+});
+
+
+//Hitos
+Route::get('/hitos/create/{id}', function ($id){
+    $expediente = Expediente::find($id);
+    if (!$expediente) {
+        abort(404, 'Expediente no encontrado');
+    }
+    $hitos = Hito::where('expediente_id', $id)->get();
+    //dd($expediente);
+    return view('hitos.create', ['expediente' => $expediente, 'hitos' => $hitos]);
+});
+
+Route::post('/hitos', function(){
+    Hito::create([
+        'hito' => request('hito'),
+        'fecha' => request('fecha'),
+        'expediente_id' => request('expediente_id'),
+    ]);
+    return redirect('/hitos/' . request('expediente_id'));
+});
+
+Route::get('/hitos/{id}', function ($id){
+    $expediente = Expediente::find($id);
+    $hitos = Hito::where('expediente_id', $id)->get()->sortByDesc('created_at');
+    return view('hitos.index', ['expediente' => $expediente, 'hitos' => $hitos]);
 });

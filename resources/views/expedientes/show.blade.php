@@ -2,10 +2,30 @@
     <x-slot:heading>
         Expediente
     </x-slot:heading>
-    <h1 class="font-bold text-lg">Título: {{ $expediente['titulo']}}</h1>
-    <h2><strong>Objeto: </strong>{{ $expediente['objeto']}}</h2>
-    <h2><strong>Expediente: </strong>{{ $expediente['num_expte']}}</h2>
-    <h2><strong>Región: </strong>{{ $expediente->region->region}} - <strong>Provincia: </strong>{{ $expediente->provincia->provincia}} - <strong>Localidad: </strong>{{ $expediente->localidad->localidad}}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4">
+            <h1 class="font-bold text-lg">Título: {{ $expediente['titulo']}}</h1>
+            <h2><strong>Objeto: </strong>{{ $expediente['objeto']}}</h2>
+            <h2><strong>Expediente: </strong>{{ $expediente['num_expte']}}</h2>
+            <h2><strong>Región: </strong>{{ $expediente->region->region}} - <strong>Provincia: </strong>{{ $expediente->provincia->provincia}} - <strong>Localidad: </strong>{{ $expediente->localidad->localidad}}</h2>
+            <h2><strong>Estado: </strong>{{ $expediente->estado->estado}} - <strong>Asignación Presupuestaria: </strong>{{ $expediente->asignacion->asignacion}} - <strong>Tipo de contrato: </strong>{{ $expediente->tipo->tipo}}</h2>
+            <h2><strong>Tema estratégico: </strong>{{ $expediente->tema->tema}}</h2>
+            <h2><strong>Técnico responsable: </strong>{{ $expediente->usuario->nombre}} {{ $expediente->usuario->apellido}}</h2>
+        </div>
+        <div class="p-4">
+            <div class="text-right mb-4">
+                <button class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <i class="bi bi-pencil"> Editar</i>
+                </button>
+                <a href="/hitos/{{ $expediente->id }}">
+                    <button class="px-7 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <i class="bi bi-list"></i> Hitos
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <hr style="height: 5px; border-width: 0; color: blue; background-color: blue;" class="my-4">
     <h2><strong>Montos: </strong></h2>
     <table class="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-md">
@@ -116,7 +136,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $expediente->tiempo_tecnico_elevacion_tdrs }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $expediente->tiempo_elevacion_firma }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $expediente->tiempo_direccion_gestion }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $expediente->tiempo_direccion_gestion }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $expediente->tiempo_gestion_contrato }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $expediente->tiempo_total_gestion }}</td>
         </tbody>
     </table>

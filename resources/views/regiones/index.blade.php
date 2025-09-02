@@ -2,10 +2,10 @@
     <x-slot:heading>
         Gestión de Regiones
     </x-slot:heading>
-    <div class="text-right mb-4">
+    <div class="flex justify-end">
         <a href="/regiones/create">
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                ➕ Agregar región
+            <button class="flex justify-right rounded-md bg-blue-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                <i class="bi bi-plus"> Agregar</i>
             </button>
         </a>
     </div>
@@ -23,14 +23,20 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $region->id }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $region->region }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <button class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                        ✏️ Editar
-                    </button>
+                    <a href="/regiones/{{ $region->id }}/edit">
+                        <button class="flex w-full justify-center rounded-md bg-yellow-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-yellow-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600">
+                            <i class="bi bi-pencil"> Editar</i>
+                        </button>
+                    </a>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <button class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
-                        🗑️ Eliminar
-                    </button>
+                    <form action="/regiones/{{ $region->id }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+                            <i class="bi bi-trash"> Eliminar</i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         @endforeach

@@ -8,7 +8,7 @@ class Proveedor extends Model
 {
     //
     protected $table = 'proveedores';
-    protected $fillable = ['razon', 'nombre', 'apellido', 'email', 'celular', 'provincia_id'];
+    protected $fillable = ['razon', 'cuit', 'num_proveedor', 'email', 'tel', 'contacto', 'contacto_email', 'contacto_celular', 'documentacion', 'provincia_id'];
 
     public function expedientes(){
         return $this->hasMany(Expediente::class);

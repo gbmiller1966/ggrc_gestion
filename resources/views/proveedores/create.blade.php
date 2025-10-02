@@ -5,7 +5,6 @@
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <img src="/img/logo.png" alt="Consejo Federal de Inversiones" class="mx-auto h-10 w-auto" />
     <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Ingrese el Proveedor</h2>
   </div>
 
@@ -21,16 +20,16 @@
         </div>
 
         <div>
-            <label for="nombre" class="block text-sm/6 font-medium text-gray-900">Nombre:</label>
+            <label for="cuit" class="block text-sm/6 font-medium text-gray-900">CUIT:</label>
             <div class="mt-2">
-                <input id="nombre" type="text" name="nombre" required autocomplete="nombre" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                <input id="cuit" type="text" name="cuit" required autocomplete="cuit" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
             </div>
         </div>
 
         <div>
-            <label for="apellido" class="block text-sm/6 font-medium text-gray-900">Apellido:</label>
+            <label for="num_proveedor" class="block text-sm/6 font-medium text-gray-900">Número de proveedor:</label>
             <div class="mt-2">
-                <input id="apellido" type="text" name="apellido" required autocomplete="apellido" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                <input id="num_proveedor" type="text" name="num_proveedor" required autocomplete="num_proveedor" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
             </div>
         </div>
 
@@ -42,9 +41,33 @@
         </div>
 
         <div>
-            <label for="celular" class="block text-sm/6 font-medium text-gray-900">Celular:</label>
+            <label for="tel" class="block text-sm/6 font-medium text-gray-900">Teléfono:</label>
             <div class="mt-2">
-                <input id="celular" type="tel" name="celular" required autocomplete="celular" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                <input id="tel" type="tel" name="tel" required autocomplete="tel" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+            </div>
+        </div>
+
+        <hr style="height: 5px; border-width: 0; color: blue; background-color: blue;" class="my-4">
+        <h2><strong>Información del contacto: </strong></h2>
+
+        <div>
+            <label for="contacto" class="block text-sm/6 font-medium text-gray-900">Nombre y Apellido:</label>
+            <div class="mt-2">
+                <input id="contacto" type="text" name="contacto" required autocomplete="contacto" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+            </div>
+        </div>
+
+        <div>
+            <label for="contacto_email" class="block text-sm/6 font-medium text-gray-900">Email:</label>
+            <div class="mt-2">
+                <input id="contacto_email" type="email" name="contacto_email" required autocomplete="contacto_email" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+            </div>
+        </div>
+
+        <div>
+            <label for="contacto_celular" class="block text-sm/6 font-medium text-gray-900">Celular:</label>
+            <div class="mt-2">
+                <input id="contacto_celular" type="tel" name="contacto_celular" required autocomplete="contacto_celular" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
             </div>
         </div>
 
@@ -56,9 +79,13 @@
                 @endforeach
             </select>
         </div>
-
-        <div>
-            <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Guardar</button>
+        <div class="grid grid-cols-2 gap-2">
+            <button type="submit" class="justify-center mt-1 rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <i class="bi bi-save"> Guardar</i>
+            </button>
+            <button type="button" class="justify-center mt-1 rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <a href="/proveedores"><i class="bi bi-x-circle-fill"> Cancelar</i></a>
+            </button>
         </div>
     </form>
   </div>

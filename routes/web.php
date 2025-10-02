@@ -26,16 +26,43 @@ Route::get('/', function () {
             'name' => "Willy"
         ]
     );
-});
+})->name('home');
 
 
 //Expedientes
 
-Route::get('/expedientes', function (){
+// routes/web.php
+// Ruta para mostrar los expedientes (con filtro opcional de provincia)
+Route::get('/expedientes', function () {
+    $provincias = Provincia::all(); // Obtener todas las provincias para el select
+    $usuarios = Usuario::all(); //Obtener todos los usuarios
+    $expedientes = Expediente::with('provincia')->paginate(10); // Expedientes sin filtro inicial
+
+    // Si viene una provincia seleccionada en la URL (por el filtro)
+    if (request()->has('provincia_id') && request()->provincia_id != '') {
+        $provinciaId = request()->provincia_id;
+        $expedientes = Expediente::where('provincia_id', $provinciaId)
+                                 ->with('provincia')
+                                 ->paginate(10);
+    }
+
+    // Si viene un usuario seleccionado en la URL (por el filtro)
+    if (request()->has('usuario_id') && request()->usuario_id != '') {
+        $usuarioId = request()->usuario_id;
+        $expedientes = Expediente::where('usuario_id', $usuarioId)
+                                 ->with('usuario')
+                                 ->paginate(10);
+    }
+
+    return view('expedientes.index', compact('provincias', 'usuarios', 'expedientes'));
+})->name('expedientes.index');
+
+/* Route::get('/expedientes', function (){
     return view('expedientes.index', [
-        'expedientes' => Expediente::latest()->simplePaginate(15),
+        'provincias' => Provincia::all(),
+        'expedientes' => Expediente::orderBy('provincia_id', 'asc')->orderBy('estado_id','asc')->latest()->paginate(15),
     ]);
-});
+}); */
 
 Route::get('/expedientes/create', function (){
     $direcciones = Direccion::all();
@@ -89,35 +116,44 @@ Route::post('/expedientes', function(){
         $tiempo_tecnico_elevacion_tdrs = 0;
     }
 
-    //tiempo desde la elevación hasta la firma de dirección 
+    //tiempo desde elevación a la firma del jefe de área
+    if(request('fecha_firma_area')){
+        $fecha_firma_area = new DateTime(request('fecha_firma_area'));
+        $diferencia_tecnico_area = $fecha_elevacion_tdrs->diff($fecha_firma_area);
+        $tiempo_tecnico_area = $diferencia_tecnico_area->days;
+    }else{
+        $tiempo_tecnico_area = 0;
+    }
+
+    //tiempo desde la elevación hasta la firma de dirección - xxxxxxxxxxxxxxx
     if(request('fecha_firma_direccion')){
         $fecha_firma_direccion = new DateTime(request('fecha_firma_direccion'));
-        $diferencia_elevacion_firma = $fecha_elevacion_tdrs->diff($fecha_firma_direccion);
-        $tiempo_elevacion_firma = $diferencia_elevacion_firma->days;
+        $diferencia_elevacion_firma = $fecha_firma_area->diff($fecha_firma_direccion);
+        $tiempo_area_direccion = $diferencia_elevacion_firma->days;
     }else{
-        $tiempo_elevacion_firma = 0;
+        $tiempo_area_direccion = 0;
     }
   
     //tiempo desde la firma de direccion hasta el pase a gestión
-    if(request('fecha_derivacion_gestion')){
-        $fecha_derivacion_gestion = new DateTime(request('fecha_derivacion_gestion'));
-        $diferencia_direccion_gestion = $fecha_firma_direccion->diff($fecha_derivacion_gestion);
-        $tiempo_direccion_gestion = $diferencia_direccion_gestion->days;
+    if(request('fecha_derivacion_compras')){
+        $fecha_derivacion_compras = new DateTime(request('fecha_derivacion_compras'));
+        $diferencia_direccion_compras = $fecha_firma_direccion->diff($fecha_derivacion_compras);
+        $tiempo_direccion_compras = $diferencia_direccion_compras->days;
     }else{
-        $tiempo_direccion_gestion = 0;
+        $tiempo_direccion_compras = 0;
     }
     
     if(request('fecha_inicio_contrato')){
         //tiempo desde el pase a gestión hasta el inicio del contrato
         $fecha_inicio_contrato = new DateTime(request('fecha_inicio_contrato'));
-        $diferencia_gestion_firma_contrato = $fecha_derivacion_gestion->diff($fecha_inicio_contrato);
-        $tiempo_gestion_contrato = $diferencia_gestion_firma_contrato->days;
+        $diferencia_compras_firma_contrato = $fecha_derivacion_compras->diff($fecha_inicio_contrato);
+        $tiempo_compras_contrato = $diferencia_compras_firma_contrato->days;
 
         //Total tiempo de gestión desde ingreso hasta la firma del contrato
         $diferencia_ingreso_inicio = $fecha_ingreso_cfi->diff($fecha_inicio_contrato);
         $tiempo_total_gestion = $diferencia_ingreso_inicio->days;
     }else{
-        $tiempo_gestion_contrato = 0;
+        $tiempo_compras_contrato = 0;
         $tiempo_total_gestion = 0;
     }
 
@@ -142,13 +178,15 @@ Route::post('/expedientes', function(){
         'tiempo_area_tecnico' => $tiempo_area_tecnico,
         'fecha_elevacion_tdrs' => $fecha_elevacion_tdrs,
         'tiempo_tecnico_elevacion_tdrs' => $tiempo_tecnico_elevacion_tdrs,
+        'fecha_firma_area' => $fecha_firma_area,
+        'tiempo_tecnico_area' => $tiempo_tecnico_area,
         'fecha_firma_direccion' => $fecha_firma_direccion,
-        'tiempo_elevacion_firma' => $tiempo_elevacion_firma,
+        'tiempo_area_direccion' => $tiempo_area_direccion,
         'gde_firma_direccion' => request('gde_firma_direccion'),
-        'fecha_derivacion_gestion' => $fecha_derivacion_gestion,
-        'tiempo_direccion_gestion' => $tiempo_direccion_gestion,
+        'fecha_derivacion_compras' => $fecha_derivacion_compras,
+        'tiempo_direccion_compras' => $tiempo_direccion_compras,
         'fecha_inicio_contrato' => $fecha_inicio_contrato,
-        'tiempo_gestion_contrato' => $tiempo_gestion_contrato,
+        'tiempo_compras_contrato' => $tiempo_compras_contrato,
         'tiempo_total_gestion' => $tiempo_total_gestion,
         'plazo' => $plazo,
         'fecha_fin_contrato' => $fecha_fin_contrato,
@@ -177,11 +215,16 @@ Route::post('/expedientes', function(){
     return redirect('/expedientes');
 });
 Route::get('/expedientes/{id}', function ($id){
-    $expediente = Expediente::find($id);
-    return view('expedientes.show', ['expediente' => $expediente]);
+    $expediente = Expediente::findOrFail($id);
+    $provincias = Provincia::all();
+    $proveedores = Proveedor::all();
+    return view('expedientes.show', [
+        'expediente' => $expediente,
+        'provincias' => $provincias,
+        'proveedores' => $proveedores
+    ]);
     
 });
-
 
 
 //Gestión de Tablas
@@ -230,11 +273,7 @@ Route::post('/regiones', function(){
 });
 
 Route::get('/regiones/{id}/edit', function ($id){
-    $region = Region::find($id);
-    if (!$region) {
-        abort(404, 'Región no encontrada');
-    }
-
+    $region = Region::findOrFail($id);
     return view('regiones.edit', ['region' => $region]);
 });
 
@@ -243,10 +282,6 @@ Route::delete('/regiones/{id}', function ($id){
     $region->delete();
     return redirect('/regiones');
 });
-
-
-
-
 
 
 //Provincias
@@ -264,7 +299,11 @@ Route::get('/provincias/create', function (){
 });
 
 Route::post('/provincias', function(){
-    //d(request()->all());
+    
+    request()->validate([
+        'provincia' => 'required|max:50',
+    ]);
+    
     Provincia::create([
         'provincia' => request('provincia'),
         'region_id' => request('region_id'),
@@ -272,16 +311,27 @@ Route::post('/provincias', function(){
     return redirect('/provincias');
 });
 
+Route::get('/provincias/{id}/edit', function ($id){
+    $provincia = Provincia::findOrFail($id);
+    return view('provincias.edit', ['provincia' => $provincia]);
+});
+
+Route::delete('/provincias/{id}', function ($id){
+    $provincia = Provincia::findOrFail($id);
+    $provincia->delete();
+    return redirect('/provincias');
+});
 
 
 //Localidades
-
 Route::get('/localidades', function (){
+    $provincias = Provincia::all();
+    $localidades = Localidad::all();
     return view('localidades.index', [
-        'localidades' => Localidad::all()
+        'localidades' => $localidades,
+        'provincias' => $provincias        
     ]);
-}
-);
+});
 
 Route::get('/localidades/create', function (){
     $provincias = Provincia::all();
@@ -294,6 +344,18 @@ Route::post('/localidades', function(){
         'localidad' => request('localidad'),
         'provincia_id' => request('provincia_id'),
     ]);
+    return redirect('/localidades');
+});
+
+Route::get('/localidades/{id}/edit', function ($id){
+    $provincias = Provincia::all();
+    $localidad = Localidad::findOrFail($id);
+    return view('localidades.edit', ['provincias' => $provincias, 'localidad' => $localidad]);
+});
+
+Route::delete('/localidades/{id}', function ($id){
+    $localidad = Localidad::findOrFail($id);
+    $localidad->delete();
     return redirect('/localidades');
 });
 
@@ -404,13 +466,24 @@ Route::post('/contrapartes', function(){
     return redirect('/contrapartes');
 });
 
+Route::get('/contrapartes/{id}', function ($id){
+    $contraparte = Contraparte::find($id);
+    return view('contrapartes.show', ['contraparte' => $contraparte]);
+    
+});
+
 
 
 //Proveedores
 
 Route::get('/proveedores', function (){
+    $provincias = Provincia::all();
+    $proveedores = Proveedor::where('razon', '!=', 'Sin datos')
+                             ->orderBy('razon')
+                             ->get();
     return view('proveedores.index', [
-        'proveedores' => Proveedor::all()
+        'proveedores' => $proveedores,
+        'provincias' => $provincias        
     ]);
 });
 
@@ -423,16 +496,24 @@ Route::post('/proveedores', function(){
     //d(request()->all());
     \App\Models\Proveedor::create([
         'razon' => request('razon'),
-        'nombre' => request('nombre'),
-        'apellido' => request('apellido'),
+        'cuit' => request('cuit'),
+        'num_proveedor' => request('num_proveedor'),
         'email' => request('email'),
-        'celular' => request('celular'),
-        'dependencia' => request('dependencia'),
+        'tel' => request('tel'),
+        'contacto' => request('contacto'),
+        'contacto_email' => request('contacto_email'),
+        'contacto_celular' => request('contacto_celular'),
+        'documentacion' => request('documentacion'),
         'provincia_id' => request('provincia_id'),
     ]);
     return redirect('/proveedores');
 });
 
+Route::get('/proveedores/{id}', function ($id){
+    $proveedor = proveedor::find($id);
+    return view('proveedores.show', ['proveedor' => $proveedor]);
+    
+});
 
 
 //Asignaciones
@@ -540,10 +621,7 @@ Route::post('/informes', function(){
 
 //Hitos
 Route::get('/hitos/create/{id}', function ($id){
-    $expediente = Expediente::find($id);
-    if (!$expediente) {
-        abort(404, 'Expediente no encontrado');
-    }
+    $expediente = Expediente::findOrFail($id);
     $hitos = Hito::where('expediente_id', $id)->get();
     //dd($expediente);
     return view('hitos.create', ['expediente' => $expediente, 'hitos' => $hitos]);
@@ -558,8 +636,16 @@ Route::post('/hitos', function(){
     return redirect('/hitos/' . request('expediente_id'));
 });
 
-Route::get('/hitos/{id}', function ($id){
+Route::get('/hitos/{id}', function ($id) {
+    // 1. Obtener el expediente
     $expediente = Expediente::find($id);
-    $hitos = Hito::where('expediente_id', $id)->get()->sortByDesc('created_at');
+
+    // 2. Realizar la consulta, ordenar por fecha de creación descendente
+    // y luego paginar los resultados
+    $hitos = Hito::where('expediente_id', $id)
+                 ->orderBy('created_at', 'desc')
+                 ->paginate(5);
+
+    // 3. Pasar los objetos a la vista
     return view('hitos.index', ['expediente' => $expediente, 'hitos' => $hitos]);
 });

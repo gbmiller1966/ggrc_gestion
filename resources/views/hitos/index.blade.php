@@ -43,6 +43,9 @@
             </tr>
         @endforeach
     </tbody>
+    <div>
+        {{ $hitos->links() }}
+    </div>
     </table>
 
 </x-layout>

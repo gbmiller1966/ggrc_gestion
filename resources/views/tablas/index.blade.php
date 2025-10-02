@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:heading>
-        Gestión de tablas del sistema
+        Gestión de Tablas del Sistema
     </x-slot:heading>
 
     <p class="text-lg">

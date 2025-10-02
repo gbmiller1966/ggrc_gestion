@@ -8,7 +8,7 @@ class Contraparte extends Model
 {
     //
 
-    protected $fillable = ['nombre', 'apellido', 'email', 'celular', 'dependencia', 'provincia_id'];
+    protected $fillable = ['nombre', 'apellido', 'email', 'celular', 'dependencia', 'cargo', 'provincia_id'];
 
     public function expedientes(){
         return $this->hasMany(Expediente::class);

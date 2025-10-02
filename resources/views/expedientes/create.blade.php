@@ -3,15 +3,15 @@
         Alta de Expediente
     </x-slot:heading>
 
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+<div class="flex min-h-full flex-col justify-center px-6 py-0 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <img src="/img/logo.png" alt="Consejo Federal de Inversiones" class="mx-auto h-10 w-auto" />
     <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Ingrese los datos del expediente</h2>
   </div>
 
     <form action="/expedientes" method="POST" class="space-y-6">
         @csrf
         <div class="grid grid-cols-2 gap-4">
+
             <div class="bg-blue-200 p-4">
                 <div>
                     <label for="titulo" class="block text-sm/6 font-medium text-gray-900">Título:</label>
@@ -20,6 +20,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="bg-blue-200 p-4">
                 <div>
                     <label for="num_expte" class="block text-sm/6 font-medium text-gray-900">Número de expediente GDE:</label>
@@ -28,17 +29,22 @@
                     </div> 
                 </div>
             </div>
-            <div class="bg-blue-200 p-4 col-span-2">
-                <div>
-                    <label for="objeto" class="block text-sm/6 font-medium text-gray-900">Objeto:</label>
-                    <div class="mt-2">
-                        <textarea id="objeto" name="objeto" required autocomplete="objeto" rows="3" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"></textarea>
-                    </div>
-                </div> 
-            </div>
+        </div>
+
+        <div class="bg-blue-200 p-4 col-span-2">
+            <div>
+                <label for="objeto" class="block text-sm/6 font-medium text-gray-900">Objeto:</label>
+                <div class="mt-2">
+                    <textarea id="objeto" name="objeto" required autocomplete="objeto" rows="3" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"></textarea>
+                </div>
+            </div> 
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_ingreso_cfi" class="block text-sm/6 font-medium text-gray-900">Fecha de ingreso al CFI:</label>
+                    <label for="fecha_ingreso_cfi" class="block text-sm/6 font-medium text-gray-900">Ingreso al CFI:</label>
                     <div class="mt-2">
                         <input id="fecha_ingreso_cfi" type="date" name="fecha_ingreso_cfi" required autocomplete="fecha_ingreso_cfi" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
@@ -47,16 +53,20 @@
 
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_derivacion_area" class="block text-sm/6 font-medium text-gray-900">Fecha de derivacion al Área:</label>
+                    <label for="fecha_derivacion_area" class="block text-sm/6 font-medium text-gray-900">Derivacion al Área:</label>
                     <div class="mt-2">
                         <input id="fecha_derivacion_area" type="date" name="fecha_derivacion_area" required autocomplete="fecha_derivacion_area" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
                 </div>
             </div>
 
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_derivacion_tecnico" class="block text-sm/6 font-medium text-gray-900">Fecha de derivación al técnico:</label>
+                    <label for="fecha_derivacion_tecnico" class="block text-sm/6 font-medium text-gray-900">Derivación al técnico:</label>
                     <div class="mt-2">
                         <input id="fecha_derivacion_tecnico" type="date" name="fecha_derivacion_tecnico" required autocomplete="fecha_derivacion_tecnico" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
@@ -65,18 +75,29 @@
 
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_elevacion_tdrs" class="block text-sm/6 font-medium text-gray-900">Fecha de elevación de TDRs:</label>
+                    <label for="fecha_elevacion_tdrs" class="block text-sm/6 font-medium text-gray-900">Elevación de TDRs:</label>
                     <div class="mt-2">
                         <input id="fecha_elevacion_tdrs" type="date" name="fecha_elevacion_tdrs" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="grid grid-cols-3 gap-4">
+
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_firma_direccion" class="block text-sm/6 font-medium text-gray-900">Fecha firma de Dirección de TDRs:</label>
+                    <label for="fecha_firma_area" class="block text-sm/6 font-medium text-gray-900">Firma de TDRs - Jefe de Área:</label>
+                    <div class="mt-2">
+                        <input id="fecha_firma_area" type="date" name="fecha_firma_area" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-blue-200 p-4">
+                <div>
+                    <label for="fecha_firma_direccion" class="block text-sm/6 font-medium text-gray-900">Firma de TDRs - Dirección:</label>
                     <div class="mt-2">
                         <input id="fecha_firma_direccion" type="date" name="fecha_firma_direccion" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
@@ -85,40 +106,44 @@
 
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="gde_firma_direccion" class="block text-sm/6 font-medium text-gray-900">GDE firma de Dirección de TDRs:</label>
+                    <label for="gde_firma_direccion" class="block text-sm/6 font-medium text-gray-900">GDE Firma de TDRs - Dirección:</label>
                     <div class="mt-2">
                         <input id="gde_firma_direccion" type="text" name="gde_firma_direccion" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
                 </div>
             </div>
 
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_derivacion_gestion" class="block text-sm/6 font-medium text-gray-900">Fecha de derivación a Gestión:</label>
+                    <label for="fecha_derivacion_compras" class="block text-sm/6 font-medium text-gray-900">Derivación a Compras y Contrataciones:</label>
                     <div class="mt-2">
-                        <input id="fecha_derivacion_gestion" type="date" name="fecha_derivacion_gestion" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                        <input id="fecha_derivacion_compras" type="date" name="fecha_derivacion_compras" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="grid grid-cols-2 gap-4">
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_inicio_contrato" class="block text-sm/6 font-medium text-gray-900">Fecha de inicio del contrato:</label>
+                    <label for="fecha_inicio_contrato" class="block text-sm/6 font-medium text-gray-900">Inicio del contrato:</label>
                     <div class="mt-2">
                         <input id="fecha_inicio_contrato" type="date" name="fecha_inicio_contrato" required autocomplete="fecha_inicio_contrato" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
                 </div>
             </div>
+
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_fin_contrato" class="block text-sm/6 font-medium text-gray-900">Fecha de fin del contrato:</label>
+                    <label for="fecha_fin_contrato" class="block text-sm/6 font-medium text-gray-900">Fin del contrato:</label>
                     <div class="mt-2">
                         <input id="fecha_fin_contrato" type="date" name="fecha_fin_contrato" required autocomplete="fecha_fin_contrato" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="grid grid-cols-3 gap-4">
@@ -151,7 +176,7 @@
         <div class="grid grid-cols-2 gap-4">
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_aprobacion_if" class="block text-sm/6 font-medium text-gray-900">Fecha aprobación Informe Final:</label>
+                    <label for="fecha_aprobacion_if" class="block text-sm/6 font-medium text-gray-900">Aprobación del Informe Final:</label>
                     <div class="mt-2">
                         <input id="fecha_aprobacion_if" type="date" name="fecha_aprobacion_if" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
@@ -170,7 +195,7 @@
         <div class="grid grid-cols-2 gap-4">
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_envio_biblioteca" class="block text-sm/6 font-medium text-gray-900">Fecha de evío a Biblioteca:</label>
+                    <label for="fecha_envio_biblioteca" class="block text-sm/6 font-medium text-gray-900">Envío a Biblioteca:</label>
                     <div class="mt-2">
                         <input id="fecha_envio_biblioteca" type="date" name="fecha_envio_biblioteca" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
@@ -189,7 +214,7 @@
         <div class="grid grid-cols-2 gap-4">
             <div class="bg-blue-200 p-4">
                 <div>
-                    <label for="fecha_envio_archivo" class="block text-sm/6 font-medium text-gray-900">Fecha de evío a Archivo:</label>
+                    <label for="fecha_envio_archivo" class="block text-sm/6 font-medium text-gray-900">Envío a Archivo:</label>
                     <div class="mt-2">
                         <input id="fecha_envio_archivo" type="date" name="fecha_envio_archivo" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                     </div>
@@ -335,9 +360,13 @@
                 </div>
             </div>
         </div>
-
-        <div>
-            <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Enviar</button>
+        <div class="grid grid-cols-2 gap-2">
+            <button type="submit" class="justify-center mt-1 rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <i class="bi bi-save"> Guardar</i>
+            </button>
+            <button type="button" class="justify-center mt-1 rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <a href="/expedientes"><i class="bi bi-x-circle-fill"> Cancelar</i></a>
+            </button>
         </div>
     </form>
 

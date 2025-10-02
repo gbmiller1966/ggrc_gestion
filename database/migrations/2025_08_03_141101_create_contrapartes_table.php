@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('contrapartes', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('apellido');
-            $table->string('email');
-            $table->bigInteger('celular');
-            $table->string('dependencia');
+            $table->string('nombre')->nullable();
+            $table->string('apellido')->nullable();
+            $table->string('email')->nullable();
+            $table->bigInteger('celular')->nullable();
+            $table->string('dependencia')->nullable();
+            $table->string('cargo')->nullable();
             $table->foreignIdFor(\App\Models\Provincia::class);
             $table->timestamps();
         });

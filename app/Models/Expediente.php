@@ -20,12 +20,17 @@ class Expediente extends Model {
         'tiempo_area_tecnico',
         'fecha_elevacion_tdrs',
         'tiempo_tecnico_elevacion_tdrs',
+//incluimos al jefe de área
+        'fecha_firma_area',
+        'tiempo_tecnico_area',
+
+//modificamos el tiempo de dirección: tiempo_area_direccion
         'fecha_firma_direccion',
-        'tiempo_elevacion_firma',
+        'tiempo_area_direccion',
         'gde_firma_direccion',
-        'fecha_derivacion_gestion',
-        'tiempo_direccion_gestion',
-        'tiempo_gestion_contrato',
+        'fecha_derivacion_compras',
+        'tiempo_direccion_compras',
+        'tiempo_compras_contrato',
         'fecha_inicio_contrato',
         'tiempo_total_gestion',
         'plazo',
@@ -40,6 +45,10 @@ class Expediente extends Model {
         'gde_envio_biblioteca',
         'fecha_envio_archivo',
         'gde_envio_archivo',
+        'doc_proveedor',
+        'doc_dotacion',
+        'doc_tdrs',
+        'observaciones',
         'region_id',
         'provincia_id',
         'localidad_id',
@@ -52,6 +61,21 @@ class Expediente extends Model {
         'tema_id',
         'tipo_id',
         'estado_id'
+    ];
+
+    protected $casts = [
+        'fecha_ingreso_cfi' => 'datetime',
+        'fecha_derivacion_area' => 'datetime',
+        'fecha_derivacion_tecnico' => 'datetime',
+        'fecha_elevacion_tdrs' => 'datetime',
+        'fecha_firma_area' => 'datetime',
+        'fecha_firma_direccion' => 'datetime',
+        'fecha_derivacion_compras' => 'datetime',
+        'fecha_inicio_contrato' => 'datetime',
+        'fecha_fin_contrato' => 'datetime',
+        'fecha_aprobacion_if' => 'datetime',
+        'fecha_envio_biblioteca' => 'datetime',
+        'fecha_envio_archivo' => 'datetime'
     ];
 
     public function region(){

@@ -5,7 +5,6 @@
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <img src="/img/logo.png" alt="Consejo Federal de Inversiones" class="mx-auto h-10 w-auto" />
     <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Ingrese el Área</h2>
   </div>
 
@@ -27,9 +26,13 @@
                 @endforeach
             </select>
         </div>
-
-        <div>
-            <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Guardar</button>
+        <div class="grid grid-cols-2 gap-2">
+            <button type="submit" class="justify-center mt-1 rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <i class="bi bi-save"> Guardar</i>
+            </button>
+            <button type="button" class="justify-center mt-1 rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <a href="/areas"><i class="bi bi-x-circle-fill"> Cancelar</i></a>
+            </button>
         </div>
     </form>
   </div>

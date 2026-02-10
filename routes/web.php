@@ -16,6 +16,10 @@ use App\Models\Tipo;
 use App\Models\Estado;
 use App\Models\Informe;
 use App\Models\Hito;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\ProvinciaController;
+use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\SessionController;
 
 Route::get('/', function () {
 /*     $expedientes = Expediente::all();
@@ -226,44 +230,23 @@ Route::get('/expedientes/{id}', function ($id){
     
 });
 
+//SIN USAR CONTROLADORES
 
-//Gestión de Tablas
-
-Route::get('/tablas', function () {
-    return view('tablas.index');
-});
-
-
-
-//Regiones
-
-Route::get('/regiones', function (){
+//-----------------------REGIONES--------------------------------
+//GET INDEX
+/* Route::get('/regiones', function (){
     return view('regiones.index', [
         'regiones' => Region::all()
     ]);
-});
+}); 
 
 Route::get('/regiones/create', function (){
     return view('regiones.create');
 });
 
-Route::post('/regiones/{id}', function ($id){
-    $region = Region::findOrFail($id);
-
-    request()->validate([
-        'region' => 'required|max:50',
-    ]);
-
-    $region->update([
-        'region' => request('region'),
-    ]);
-
-    return redirect('/regiones');
-});
-
 Route::post('/regiones', function(){
     request()->validate([
-        'region' => 'required|max:50',
+        'region' => 'required|max:50|min:4',
     ]);
 
     Region::create([
@@ -277,56 +260,95 @@ Route::get('/regiones/{id}/edit', function ($id){
     return view('regiones.edit', ['region' => $region]);
 });
 
-Route::delete('/regiones/{id}', function ($id){
+Route::post('/regiones/{id}', function ($id){
     $region = Region::findOrFail($id);
-    $region->delete();
+
+    request()->validate([
+        'region' => 'required|max:50|min:4',
+    ]);
+
+    $region->update([
+        'region' => request('region'),
+    ]);
+
     return redirect('/regiones');
 });
 
-
-//Provincias
-
-Route::get('/provincias', function (){
-    return view('provincias.index', [
-        'provincias' => Provincia::all()
-    ]);
-}
-);
-
-Route::get('/provincias/create', function (){
-    $regiones = Region::all();
-    return view('provincias.create', ['regiones' => $regiones]);
+Route::delete('/regiones/{id}', function ($id){
+//    $region = Region::findOrFail($id);
+//    $region->delete();
+    Region::findOrFail($id)->delete();
+    return redirect('/regiones');
 });
 
-Route::post('/provincias', function(){
-    
-    request()->validate([
-        'provincia' => 'required|max:50',
-    ]);
-    
-    Provincia::create([
-        'provincia' => request('provincia'),
-        'region_id' => request('region_id'),
-    ]);
-    return redirect('/provincias');
-});
+*/
 
-Route::get('/provincias/{id}/edit', function ($id){
-    $provincia = Provincia::findOrFail($id);
-    return view('provincias.edit', ['provincia' => $provincia]);
-});
+//-----------------------AUTH--------------------------------
 
-Route::delete('/provincias/{id}', function ($id){
-    $provincia = Provincia::findOrFail($id);
-    $provincia->delete();
-    return redirect('/provincias');
-});
+Route::get('/register', [RegisteredUserController::class, 'create']);
 
+Route::post('/register', [RegisteredUserController::class, 'store']);
+
+Route::get('/login', [SessionController::class, 'create']);
+
+Route::post('/login', [SessionController::class, 'store']);
+
+Route::post('/logout', [SessionController::class, 'destroy']);
+
+
+//-----------------------TABLAS--------------------------------
+
+//Gestión de Tablas
+
+/* Route::get('/tablas', function () {
+    return view('tablas.index');
+}); */
+
+Route::view('/tablas', 'tablas.index');
+
+//Usando controladores
+
+//-----------------------REGIONES--------------------------------
+
+/* Route::get('/regiones', [RegionController::class, 'index']);
+Route::get('/regiones/create', [RegionController::class, 'create']);
+Route::post('/regiones', [RegionController::class, 'store']);
+Route::get('/regiones/{region}/edit', [RegionController::class, 'edit']);
+Route::post('/regiones/{region}', [RegionController::class, 'update']);
+Route::delete('/regiones/{region}', [RegionController::class, 'destroy']); */
+
+//Agrupando las rutas
+/* Route::controller(RegionController::class)->group(function () {
+    Route::get('/regiones', 'index');
+    Route::get('/regiones/create', 'create');
+    Route::post('/regiones', 'store');
+    Route::get('/regiones/{region}/edit', 'edit');
+    Route::post('/regiones/{region}', 'update');
+    Route::delete('/regiones/{region}', 'destroy');
+}); */
+
+//Usando resource que hace lo mismo pero con menos código pero hay que forzar el parámetro porque toma el plural en inglés
+Route::resource('regiones', RegionController::class)->parameters([
+    'regiones' => 'region',
+    //'only' => ['index', 'create'] permite solo estas dos routas
+]);
+
+//-----------------------PROVINCIAS--------------------------------
+
+Route::controller(ProvinciaController::class)->group(function () {
+    Route::get('/provincias', 'index');
+    Route::get('/provincias/create', 'create');
+    Route::post('/provincias', 'store');
+    Route::get('/provincias/{provincia}/edit', 'edit');
+    Route::post('/provincias/{provincia}', 'update');
+    Route::delete('/provincias/{provincia}', 'destroy');
+});
 
 //Localidades
+
 Route::get('/localidades', function (){
     $provincias = Provincia::all();
-    $localidades = Localidad::all();
+    $localidades = Localidad::with('provincia')->paginate(10); // Expedientes sin filtro inicial
     return view('localidades.index', [
         'localidades' => $localidades,
         'provincias' => $provincias        
@@ -442,8 +464,9 @@ Route::post('/usuarios', function(){
 //Contrapartes
 
 Route::get('/contrapartes', function (){
+    $contrapartes = Contraparte::with('provincia')->paginate(10);
     return view('contrapartes.index', [
-        'contrapartes' => Contraparte::all()
+        'contrapartes' => $contrapartes
     ]);
 });
 
@@ -473,17 +496,21 @@ Route::get('/contrapartes/{id}', function ($id){
 });
 
 
-
+$contrapartes = Contraparte::with('provincia')->paginate(10);
 //Proveedores
 
 Route::get('/proveedores', function (){
-    $provincias = Provincia::all();
-    $proveedores = Proveedor::where('razon', '!=', 'Sin datos')
+    $proveedores = Proveedor::with('provincia')
+    ->where('razon', '!=', 'Sin datos')
+    ->orderBy('razon')
+    ->paginate(10);
+    // $provincias = Provincia::all();
+/*     $proveedores = Proveedor::where('razon', '!=', 'Sin datos')
                              ->orderBy('razon')
-                             ->get();
+                             ->get(); */
     return view('proveedores.index', [
         'proveedores' => $proveedores,
-        'provincias' => $provincias        
+        // 'provincias' => $provincias        
     ]);
 });
 

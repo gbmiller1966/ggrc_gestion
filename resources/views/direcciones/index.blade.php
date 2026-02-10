@@ -3,45 +3,37 @@
         Gestión de Direcciones
     </x-slot:heading>
     <div class="flex justify-end">
-        <a href="/direcciones/create">
-            <button class="flex justify-right rounded-md mb-1 bg-blue-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                <i class="bi bi-plus"> Agregar</i>
-            </button>
-        </a>
+        <x-btn-agregar href="/direcciones/create"></x-btn-agregar>
     </div>
     <div class="flex items-center justify-center">
-    <table class="table-fixed w-3/4 divide-y divide-gray-200 border border-gray-300 rounded-md">
-    <thead class="bg-gray-100">
-        <tr>
-            <th class="w-1/4 px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
-            <th class="w-1/2 px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Dirección</th>
-            <th class="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider" colspan="2">Acciones</th>
-        </tr>
-    </thead>
-    <tbody class="bg-white divide-y divide-gray-200">
-        @foreach($direcciones as $direccion)
-            <tr>
-                <td class="w-1/4 px-3 py-3 whitespace-nowrap text-sm text-gray-900">{{ $direccion->id }}</td>
-                <td class="w-1/2 px-3 py-3 whitespace-nowrap text-sm text-gray-900">{{ $direccion->direccion }}</td>
-                <td class="w-1/4 px-3 py-3 whitespace-nowrap text-sm text-gray-900">
-                    <a href="/direcciones/{{ $direccion->id }}/edit">
-                        <button class="flex justify-end rounded-md bg-yellow-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-yellow-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600">
-                            <i class="bi bi-pencil"> Editar</i>
-                        </button>
-                    </a>
-                </td>
-                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <form action="/direcciones/{{ $direccion->id }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="flex justify-end rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
-                            <i class="bi bi-trash"> Eliminar</i>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-    </table>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="w-1/4 px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
+                        <th class="w-1/2 px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Dirección</th>
+                        <th class="w-1/4 px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider" colspan="2">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach($direcciones as $direccion)
+                        <tr>
+                            <td class="w-1/4 px-3 py-3 whitespace-nowrap text-sm text-gray-900">{{ $direccion->id }}</td>
+                            <td class="w-1/2 px-3 py-3 whitespace-nowrap text-sm text-gray-900">{{ $direccion->direccion }}</td>
+                            <td class="w-1/4 px-3 py-3 whitespace-nowrap text-sm text-gray-900">
+                                <x-btn-editar href="/direcciones/{{ $direccion->id }}/edit"></x-btn-editar>
+                            </td>
+                            <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <form action="/direcciones/{{ $direccion->id }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-btn-eliminar type="submit" onclick="return confirm('¿Está seguro de que desea eliminar esta dirección? Esta acción no se puede deshacer.')"></x-btn-eliminar>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </x-layout>

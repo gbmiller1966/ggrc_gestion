@@ -23,7 +23,7 @@
                 <i class="bi bi-save"> Guardar</i>
             </button>
             <button type="button" class="justify-center mt-1 rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                <a href="/localidades"><i class="bi bi-x-circle-fill"> Cancelar</i></a>
+                <a href="/direcciones"><i class="bi bi-x-circle-fill"> Cancelar</i></a>
             </button>
         </div>
 

@@ -2,7 +2,7 @@
     <x-slot:heading>
         Gestión de Regiones
     </x-slot:heading>
-    <div class="flex justify-end">
+    <div class="flex justify-center mb-4">
         <x-btn-agregar href="/regiones/create"></x-btn-agregar>
 {{--         <a href="/regiones/create">
             <button class="flex justify-right rounded-md mb-1 bg-blue-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
